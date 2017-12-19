@@ -1,16 +1,9 @@
 const pg = require("pg");
 const settings = require('./settings');
-
-const client = new pg.Client({
-  user      : settings.user,
-  password  : settings.password,
-  database  : settings.database,
-  host      : settings.hostname,
-  port      : settings.port,
-  ssl       : settings.ssl
-})
+const client = require('./client.js');
 
 const userInput = process.argv[2];
+const resultPrinter = (result) => {console.log(result.rows);}
 
 client.connect((err) => {
   if (err) {
@@ -20,7 +13,8 @@ client.connect((err) => {
     if (err) {
       return console.error("Error running query", err);
     }
-    console.log(result.rows);
+    resultPrinter(result);
     client.end();
   });
 });
+
